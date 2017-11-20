@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:400,700,900');
+@import url('https://fonts.googleapis.com/css?family=Saira:400,700,900');
+
+@font-face {
+	font-family: 'Glyphicons Halflings';
+	src: url('glyphicons-halflings-regular.ttf') format('truetype');
+}
+
+body {
+	font-family: 'Saira Extra Condensed';
+}
+
+.bggreen {
+	background-color: #004600;
+}
+
+.icon {
+	font-family: 'Glyphicons Halflings';
+}
+
+.green {
+	color: #8CC53E;
+}
+
+.big {
+	font-size: 1.6em;
+}
+
+.small {
+	font-size: 0.8em;
+}
+
+.h80 {
+	line-height: 80px;
+}
+
+.h40 {
+	line-height: 40px;
+}
+
+.mtop20 {
+	margin-top: 20px;
+}
+
+.pright15 {
+	padding-right: 15px;
+}
+
+.pleft5 {
+	padding-left: 5px;
+}
+
+.pleft15 {
+	padding-left: 15px;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.formsearch input[type=text] {
+	width: 80px;
+	height: 40px;
+	float: right;
+	border: none;
+	-webkit-transition: width 0.4s ease-in-out;
+	-moz-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
+	-o-transition: width 0.4s ease-in-out;
+	transition: width 0.4s ease-in-out;
+}
+
+.formsearch input[type=text]:focus {
+	width: 100%;
+	box-shadow: none;
+	-webkit-transition: width 0.4s ease-in-out;
+	-moz-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
+	-o-transition: width 0.4s ease-in-out;
+	transition: width 0.4s ease-in-out;
+}
+
+.formsearch input[type=submit] {
+	height: 40px;
+	background-color: #8CC53E;
+	color: #004600;
+	font-size: 1.3em;
+	padding: 0 10px;
+}
+
+h1 {
+	font-family: 'Saira';
+	font-size: 1.2em;
+	text-transform: uppercase;
+	font-weight: 900;
+}
+
+.b {
+	border: 1px solid red;
+}
