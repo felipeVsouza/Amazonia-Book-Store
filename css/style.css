@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:400,700,900');
-@import url('https://fonts.googleapis.com/css?family=Saira:400,700,900');
+@import url('https://fonts.googleapis.com/css?family=Saira:400,700,900|Saira+Semi+Condensed:400,700,900|Saira+Condensed:400,700,900|Saira+Extra+Condensed:400,700,900');
 
 @font-face {
 	font-family: 'Glyphicons Halflings';
@@ -8,10 +7,38 @@
 
 body {
 	font-family: 'Saira Extra Condensed';
+	color: #004600;
 }
 
 .bggreen {
 	background-color: #004600;
+}
+
+.item {
+	background-color: #EFEFEF;
+	margin-bottom: 30px;
+	padding: 20px;
+}
+
+.item img {
+	margin-bottom: 20px;
+	height: 200px;
+}
+
+.item h3 {
+	font-family: 'Saira Condensed';
+	font-size: 1.1em;
+	font-weight: 700;
+}
+
+.item h4 {
+	font-family: 'Saira Condensed';
+	font-size: 0.8em;
+}
+
+.item h5 {
+	font-family: 'Saira';
+	font-weight: 900;
 }
 
 .icon {
@@ -27,7 +54,7 @@ body {
 }
 
 .small {
-	font-size: 0.8em;
+	font-size: 0.7em;
 }
 
 .h80 {
@@ -36,6 +63,10 @@ body {
 
 .h40 {
 	line-height: 40px;
+}
+
+.h20 {
+	line-height: 20px;
 }
 
 .mtop20 {
@@ -101,6 +132,7 @@ h1 {
 	font-size: 1.2em;
 	text-transform: uppercase;
 	font-weight: 900;
+	color: #004600;
 }
 
 .b {

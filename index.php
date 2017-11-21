@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+	include_once("conn.php");
+?>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -33,7 +36,18 @@
 							<span class="icon green big h80">&#57352;</span>
 						</div>
 						<div class="shrink cell">
-							<span class="green h80 pleft5">Minha Conta</span>
+							<div class="grid-y collapse pleft5">
+								<div class="cell">
+									&nbsp;
+								</div>
+								<div class="cell small">
+									<span class="green">Olá, visitante!</span><br>
+									<a href="" class="green">Entrar ou cadastrar-se</a>
+								</div>
+								<div class="cell">
+									&nbsp;
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -50,37 +64,39 @@
 					<div class="cell">
 						<h1>Categorias</h1>
 						<ul>
-							<li>Administração</li>
-							<li>Artes</li>
-							<li>Biografia</li>
-							<li>...</li>
+							<?php
+								if ($result = $conn->query("SELECT classificacao FROM classificacao ORDER BY classificacao")) {
+									while ($row = $result->fetch_assoc()) {
+										echo "<li>".utf8_encode($row['classificacao'])."</li>";
+									}
+								}
+							?>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="small-8 medium-9 cell">
-				<div class="grid-x grid-padding-x">
+				<div class="grid-x grid-margin-x">
 					<div class="cell center">
 						<h1>Destaques</h1>
 					</div>
-					<div class="medium-6 large-4 cell">
-						1
-					</div>
-					<div class="medium-6 large-4 cell">
-						2
-					</div>
-					<div class="medium-6 large-4 cell">
-						3
-					</div>
-					<div class="medium-6 large-4 cell">
-						1
-					</div>
-					<div class="medium-6 large-4 cell">
-						2
-					</div>
-					<div class="medium-6 large-4 cell">
-						3
-					</div>
+					<?php
+						if ($result = $conn->query("SELECT * FROM livro LIMIT 6")) {
+							while ($row = $result->fetch_assoc()) {
+								echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
+								if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
+									$c = $result2->num_rows;
+									$i=1;
+									while ($row2 = $result2->fetch_assoc()) {
+										echo utf8_encode($row2['autor']).($c > $i ? " / " : "");
+										$i++;
+									}
+								}
+								echo "</h4><h5>R$ 30,00</h5></div>";
+							}
+						}
+
+					?>
 				</div>
 			</div>
 		</div>
