@@ -6,7 +6,7 @@
 }
 
 body {
-	font-family: 'Saira Extra Condensed';
+	font-family: 'Saira Semi Condensed';
 	color: #004600;
 }
 
@@ -41,12 +41,26 @@ body {
 	font-weight: 900;
 }
 
+.item h6 {
+	font-family: 'Saira';
+	color: #E00000;
+	font-weight: 700;
+}
+
 .icon {
 	font-family: 'Glyphicons Halflings';
 }
 
 .green {
 	color: #8CC53E;
+}
+
+.green a, .green a:active, .green a:visited {
+	color: #8CC53E;
+}
+
+.green a:hover {
+	color: #FFFFFF;
 }
 
 .big {
@@ -73,6 +87,10 @@ body {
 	margin-top: 20px;
 }
 
+.mbottom30 {
+	margin-bottom: 30px;
+}
+
 .pright15 {
 	padding-right: 15px;
 }
@@ -95,6 +113,17 @@ body {
 
 .right {
 	text-align: right;
+}
+
+.box {
+	border: 1px solid #004600;
+	background-color: #EFEFEF;
+	padding: 2px 5px;
+}
+
+.radiobox {
+	font-family: 'Saira Semi Condensed';
+	color: #004600;
 }
 
 .formsearch input[type=text] {
@@ -127,11 +156,45 @@ body {
 	padding: 0 10px;
 }
 
+input[type=text] {
+	height: 40px;
+}
+
+input[type=submit] {
+	height: 40px;
+	background-color: #004600;
+	color: #FFFFFF;
+	font-size: 1.3em;
+	padding: 0 30px;
+}
+
+input[type=submit]:hover {
+	background-color: #8CC53E;
+	color: #004600;
+}
+
+input[type=radio] {
+	margin-right: 5px;
+}
+
 h1 {
 	font-family: 'Saira';
 	font-size: 1.2em;
 	text-transform: uppercase;
 	font-weight: 900;
+	color: #004600;
+}
+
+a, a:active, a:visited {
+	color: #004600;
+}
+
+a:hover {
+	color: #8CC53E;
+}
+
+label {
+	font-family: 'Saira';
 	color: #004600;
 }
 
