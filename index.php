@@ -108,14 +108,23 @@
 									echo "</h4><h5>R$ ".$row['valor']."</h5></div>";
 								}
 							}
-							echo (($prev >= 1) || ($pg < $tp)) ? "<div class='cell center mbottom30'>" : "";
-							if ($prev >= 1) {
-								echo "<a href='index.php?categoria=".$_GET['categoria']."&pagina=1'><span class='icon box'>&#57449;</span></a> <a href='index.php?categoria=".$_GET['categoria']."&pagina=$prev'><span class='icon box'>&#57937;</span></a> ";
+							if (($prev >= 1) || ($pg < $tp)) {
+								echo "<div class='cell center mbottom30'><div class='grid-x'><div class='auto cell'></div>";
+								if ($prev >= 1) {
+									echo "<div class='shrink cell box'><a href='index.php?categoria=".$_GET['categoria']."&pagina=1'><span class='icon'>&#57449;</span></a></div><div class='shrink cell box'><a href='index.php?categoria=".$_GET['categoria']."&pagina=$prev'><span class='icon'>&#57937;</span></a></div>";
+								}
+								for ($g=1; $g<=$tp; $g++) {
+									if ($g == $pg) {
+										echo "<div class='shrink cell box active'><span class='icon2'>".$g."</span></div>";
+									} else {
+										echo "<div class='shrink cell box'><a href='index.php?categoria=".$_GET['categoria']."&pagina=".$g."'><span class='icon2'>".$g."</span></a></div>";
+									}
+								}
+								if ($pg < $tp) {
+									echo "<div class='shrink cell box'><a href='index.php?categoria=".$_GET['categoria']."&pagina=$next'><span class='icon'>&#57936;</span></a></div><div class='shrink cell box'><a href='index.php?categoria=".$_GET['categoria']."&pagina=$tp'><span class='icon'>&#57463;</span></a></div>";
+								}
+								echo "<div class='auto cell'></div></div></div>";
 							}
-							if ($pg < $tp) {
-								echo "<a href='index.php?categoria=".$_GET['categoria']."&pagina=$next'><span class='icon box'>&#57936;</span></a> <a href='index.php?categoria=".$_GET['categoria']."&pagina=$tp'><span class='icon box'>&#57463;</span></a>";
-							}
-							echo (($prev >= 1) || ($pg < $tp)) ? "</div>" : "";
 						} else if (isset($_GET['login'])) {
 							echo "
 								<div class='medium-6 cell'>
@@ -195,14 +204,23 @@
 									echo "</h4><h5>R$ ".$row['valor']."</h5></div>";
 								}
 							}
-							echo (($prev >= 1) || ($pg < $tp)) ? "<div class='cell center mbottom30'>" : "";
-							if ($prev >= 1) {
-								echo "<a href='index.php?busca=".$_GET['busca']."&pagina=1'><span class='icon box'>&#57449;</span></a> <a href='index.php?busca=".$_GET['busca']."&pagina=$prev'><span class='icon box'>&#57937;</span></a> ";
+							if (($prev >= 1) || ($pg < $tp)) {
+								echo "<div class='cell center mbottom30'><div class='grid-x'><div class='auto cell'></div>";
+								if ($prev >= 1) {
+									echo "<div class='shrink cell box'><a href='index.php?busca=".$_GET['busca']."&pagina=1'><span class='icon'>&#57449;</span></a></div><div class='shrink cell box'><a href='index.php?busca=".$_GET['busca']."&pagina=$prev'><span class='icon'>&#57937;</span></a></div>";
+								}
+								for ($g=1; $g<=$tp; $g++) {
+									if ($g == $pg) {
+										echo "<div class='shrink cell box active'><span class='icon2'>".$g."</span></div>";
+									} else {
+										echo "<div class='shrink cell box'><a href='index.php?busca=".$_GET['busca']."&pagina=".$g."'><span class='icon2'>".$g."</span></a></div>";
+									}
+								}
+								if ($pg < $tp) {
+									echo "<div class='shrink cell box'><a href='index.php?busca=".$_GET['busca']."&pagina=$next'><span class='icon'>&#57936;</span></a></div><div class='shrink cell box'><a href='index.php?busca=".$_GET['busca']."&pagina=$tp'><span class='icon'>&#57463;</span></a></div>";
+								}
+								echo "<div class='auto cell'></div></div></div>";
 							}
-							if ($pg < $tp) {
-								echo "<a href='index.php?busca=".$_GET['busca']."&pagina=$next'><span class='icon box'>&#57936;</span></a> <a href='index.php?busca=".$_GET['busca']."&pagina=$tp'><span class='icon box'>&#57463;</span></a>";
-							}
-							echo (($prev >= 1) || ($pg < $tp)) ? "</div>" : "";
 						} else if (isset($_POST['cadastrar'])) {
 							if ($result = $conn->query("INSERT INTO cliente(nome, tipo, ".(($_POST['tipo'] == 'f') ? "cpf" : "cnpj").", email, senha) VALUES('".utf8_decode($_POST['nome'])."', '".$_POST['tipo']."', '".utf8_decode($_POST['cpfcnpj'])."', '".utf8_decode($_POST['email'])."', '".utf8_decode($_POST['senha'])."')")) {
 								echo "cadastrado";
