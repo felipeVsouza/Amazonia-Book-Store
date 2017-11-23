@@ -71,15 +71,16 @@
 				<div class="grid-x grid-padding-x">
 					<div class="cell">
 						<h1>Categorias</h1>
-						<ul>
+						<select onChange="window.location.href=this.value">
+							<option value=''></option>
 							<?php
 								if ($result = $conn->query("SELECT classificacao FROM classificacao ORDER BY classificacao")) {
 									while ($row = $result->fetch_assoc()) {
-										echo "<li><a href='index.php?categoria=".utf8_encode($row['classificacao'])."'>".utf8_encode($row['classificacao'])."</a></li>";
+										echo "<option value='index.php?categoria=".utf8_encode($row['classificacao'])."'>".utf8_encode($row['classificacao'])."</option>";
 									}
 								}
 							?>
-						</ul>
+						</select>
 					</div>
 				</div>
 			</div>
