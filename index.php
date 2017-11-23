@@ -43,8 +43,8 @@
 								</div>
 								<div class="cell small green">
 									<?php
-										if (isset($_SESSION['usuario'])) {
-											echo "<span class='green'>Olá, ".$_SESSION['usuario']."!</span><br>";
+										if (isset($_SESSION['cliente'])) {
+											echo "<span class='green'>Olá, ".$_SESSION['cliente']."!</span><br>";
 											echo "<a href='sair.php'>Sair</a>";
 										} else {
 											echo "<span class='green'>Olá, visitante!</span><br>";
@@ -67,10 +67,10 @@
 	</div>
 	<div class="grid-container mtop20">
 		<div class="grid-x grid-padding-x">
-			<div class="small-4 medium-3 cell">
+			<div class="small-6 medium-4 large-3 cell">
 				<div class="grid-x grid-padding-x">
 					<div class="cell">
-						<h1>Categorias</h1>
+						<h1><div class='iconmenu'><span class='icon'>&#57362;</span>Categorias</div></h1>
 						<select onChange="window.location.href=this.value">
 							<option value=''></option>
 							<?php
@@ -81,10 +81,17 @@
 								}
 							?>
 						</select>
+						<?php
+							if (isset($_SESSION['cliente'])) {
+								echo "<h1 class='mtop20'><div class='iconmenu'><span class='icon'>&#57634;</span>SAC</div></h1>";
+								echo "<h1 class='mtop20'><div class='iconmenu'><span class='icon'>&#57411;</span>Biblioteca</div></h1>";
+								echo "<h1 class='mtop20'><div class='iconmenu'><span class='icon'>&#57352;</span>Cadastro</div></h1>";
+							}
+						?>
 					</div>
 				</div>
 			</div>
-			<div class="small-8 medium-9 cell">
+			<div class="small-6 medium-8 large-9 cell">
 				<div class="grid-x grid-margin-x">
 					<?php
 						if (isset($_GET['categoria'])) {
@@ -184,14 +191,89 @@
 								</div>
 							";
 						} else if (isset($_GET['busca'])) {
-							echo "<div class='cell center'><h1>RESULTADO DA BUSCA: ".$_GET['busca']."</h1></div>";
+							echo "
+								<div class='cell center item'>
+									<div class='grid-x'>
+										<div class='cell'>
+											<h1>Filtro</h1>
+											<form method='POST' action='index.php?busca=".$_GET['busca']."'>
+												<div class='grid-x grid-padding-x'>
+													<div class='medium-6 large-3 cell'>
+														<label class='left'>Valor mínimo (R$)</label>
+														<input type='number' name='min' min='0'>
+													</div>
+													<div class='medium-6 large-3 cell'>
+														<label class='left'>Valor máximo (R$)</label>
+														<input type='number' name='max' min='0'>
+													</div>
+													<div class='medium-6 large-3 cell'>
+														<label class='left'>Ano de publicação</label>
+														<input type='number' name='ano' min='1980' max='2017'>
+													</div>
+													<div class='medium-6 large-3 cell'>
+														<label class='left'>Categoria</label>
+														<select name='cat'>
+															<option value=''></option>
+							";
+							if ($result = $conn->query("SELECT classificacao FROM classificacao ORDER BY classificacao")) {
+								while ($row = $result->fetch_assoc()) {
+									echo "<option value='".utf8_encode($row['classificacao'])."'>".utf8_encode($row['classificacao'])."</option>";
+								}
+							}							
+							echo "
+														</select>														
+													</div>
+												</div>
+												<input type='submit' class='button' value='Filtrar'>
+											</form>
+										</div>
+									</div>
+								</div>
+							";
+							echo "<div class='cell center mbottom20'><h1>RESULTADO DA BUSCA: ".$_GET['busca']."";
+							if (((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) || ((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0))) {
+								echo " [R$ ".((((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0))) ? $_POST['min'] : "0")."-".((((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0))) ? $_POST['max'] : "?")."]";
+							}
+							if ((isset($_POST['ano'])) && ($_POST['ano'] != '')) {
+								echo " [Ano: ".((((isset($_POST['ano'])) && ($_POST['ano'] != ''))) ? $_POST['ano'] : "")."]";
+							}
+							if ((isset($_POST['cat'])) && ($_POST['cat'] != '')) {
+								echo " [".((((isset($_POST['cat'])) && ($_POST['cat'] != ''))) ? $_POST['cat'] : "")."]";
+							}
+
+							echo "</h1></div>";
+
 							$pg = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 							$ini = ($pg - 1) * 6;
-							$tr = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%'")->num_rows;
+							$tr = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' "
+.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
+(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
+(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
+(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
+
+"UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' "
+.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
+(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
+(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
+(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
+
+"")->num_rows;
 							$tp = ceil($tr / 6);
 							$prev = $pg - 1;
 							$next = $pg + 1;
-							if ($result = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' LIMIT ".$ini.",6")) {
+							if ($result = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' "
+.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
+(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
+(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
+(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
+
+"UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' "
+.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
+(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
+(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
+(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
+
+"LIMIT ".$ini.",6")) {
 								while ($row = $result->fetch_assoc()) {
 									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
 									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
@@ -227,7 +309,7 @@
 								echo "cadastrado";
 							}
 						} else {
-							echo "<div class='cell center'><h1>Lançamentos</h1></div>";
+							echo "<div class='cell center mbottom20'><h1>Lançamentos</h1></div>";
 							if ($result = $conn->query("SELECT * FROM livro ORDER BY id_livro DESC LIMIT 6")) {
 								while ($row = $result->fetch_assoc()) {
 									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";

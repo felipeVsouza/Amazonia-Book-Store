@@ -94,6 +94,10 @@ body {
 	margin-top: 20px;
 }
 
+.mbottom20 {
+	margin-bottom: 20px;
+}
+
 .mbottom30 {
 	margin-bottom: 30px;
 }
@@ -133,6 +137,10 @@ body {
 
 .active {
 	background-color: #8CC53E;
+}
+
+.iconmenu span {
+	margin-right: 10px;
 }
 
 .radiobox {
