@@ -245,35 +245,11 @@
 
 							$pg = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 							$ini = ($pg - 1) * 6;
-							$tr = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' "
-.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
-(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
-(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
-(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
-
-"UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' "
-.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
-(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
-(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
-(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
-
-"")->num_rows;
+							$tr = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."UNION SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."")->num_rows;
 							$tp = ceil($tr / 6);
 							$prev = $pg - 1;
 							$next = $pg + 1;
-							if ($result = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' "
-.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
-(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
-(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
-(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
-
-"UNION SELECT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao, c.classificacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' "
-.(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).
-(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).
-(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).
-(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : ("")).
-
-"LIMIT ".$ini.",6")) {
+							if ($result = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."UNION SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."LIMIT ".$ini.",6")) {
 								while ($row = $result->fetch_assoc()) {
 									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
 									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
