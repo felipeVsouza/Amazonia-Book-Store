@@ -283,19 +283,6 @@
 						} else if (isset($_GET['livro'])) {
 							if ($result = $conn->query("SELECT * FROM livro WHERE id_livro = '".$_GET['livro']."'")) {
 								$row = $result->fetch_assoc();
-/*
-									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
-									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
-										$c = $result2->num_rows;
-										$i=1;
-										while ($row2 = $result2->fetch_assoc()) {
-											echo utf8_encode($row2['autor']).($c > $i ? " / " : "");
-											$i++;
-										}
-									}
-									echo "</h4><h5>R$ ".$row['valor']."</h5></a></div>";
-*/
-
 								echo "
 									<div class='cell center item'>
 										<div class='grid-x'>
@@ -330,7 +317,10 @@
 														".$row['paginas']." páginas<br />
 														ISBN: ".$row['isbn']."<br /><br />
 														<h5>R$ ".$row['valor']."</h5>
-														<a href='#' class='button'>Adicionar ao carrinho</a>
+														<form method='POST' action=''>
+															<input type='submit' class='button' value='Adiciona no carrinho'>
+															<input type='hidden' name='add' value='".$row['id_livro']."' />
+														</form>
 														<hr />
 														<h3>Descrição:</h3>".utf8_encode($row['descricao'])."
 												</div>
