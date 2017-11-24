@@ -318,7 +318,7 @@
 														ISBN: ".$row['isbn']."<br /><br />
 														<h5>R$ ".$row['valor']."</h5>
 														<form method='POST' action=''>
-															<input type='submit' class='button' value='Adiciona no carrinho'>
+															<input type='submit' class='button' value='Adicionar ao carrinho'>
 															<input type='hidden' name='add' value='".$row['id_livro']."' />
 														</form>
 														<hr />
