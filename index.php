@@ -104,7 +104,7 @@
 							$next = $pg + 1;
 							if ($result = $conn->query("SELECT * FROM livro l INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE c.classificacao = '".utf8_decode($_GET['categoria'])."' ORDER BY l.id_livro DESC LIMIT ".$ini.",6")) {
 								while ($row = $result->fetch_assoc()) {
-									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
+									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
 									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
 										$c = $result2->num_rows;
 										$i=1;
@@ -113,7 +113,7 @@
 											$i++;
 										}
 									}
-									echo "</h4><h5>R$ ".$row['valor']."</h5></div>";
+									echo "</h4><h5>R$ ".$row['valor']."</h5></a></div>";
 								}
 							}
 							if (($prev >= 1) || ($pg < $tp)) {
@@ -251,7 +251,7 @@
 							$next = $pg + 1;
 							if ($result = $conn->query("SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM livro l INNER JOIN livro_autor la ON l.id_livro = la.livro INNER JOIN autor a ON la.autor = a.id_autor INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE l.titulo LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."UNION SELECT DISTINCT l.isbn, l.titulo, l.id_livro, l.valor, l.ano_publicacao FROM autor a INNER JOIN livro_autor la ON a.id_autor = la.autor INNER JOIN livro l ON la.livro = l.id_livro INNER JOIN livro_classificacao lc ON l.id_livro = lc.livro INNER JOIN classificacao c ON lc.classificacao = c.id_classificacao WHERE a.autor LIKE '%".utf8_decode($_GET['busca'])."%' ".(((isset($_POST['min'])) && ($_POST['min'] != '') && ($_POST['min'] > 0)) ? ("AND l.valor >=".$_POST['min']." ") : ("")).(((isset($_POST['max'])) && ($_POST['max'] != '') && ($_POST['max'] > 0)) ? ("AND l.valor <=".$_POST['max']." ") : ("")).(((isset($_POST['ano'])) && ($_POST['ano'] != '')) ? ("AND l.ano_publicacao =".$_POST['ano']." ") : ("")).(((isset($_POST['cat'])) && ($_POST['cat'] != '')) ? ("AND c.classificacao ='".utf8_decode($_POST['cat'])."' ") : (""))."LIMIT ".$ini.",6")) {
 								while ($row = $result->fetch_assoc()) {
-									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
+									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
 									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
 										$c = $result2->num_rows;
 										$i=1;
@@ -260,7 +260,7 @@
 											$i++;
 										}
 									}
-									echo "</h4><h5>R$ ".$row['valor']."</h5></div>";
+									echo "</h4><h5>R$ ".$row['valor']."</h5></a></div>";
 								}
 							}
 							if (($prev >= 1) || ($pg < $tp)) {
@@ -280,15 +280,11 @@
 								}
 								echo "<div class='auto cell'></div></div></div>";
 							}
-						} else if (isset($_POST['cadastrar'])) {
-							if ($result = $conn->query("INSERT INTO cliente(nome, tipo, ".(($_POST['tipo'] == 'f') ? "cpf" : "cnpj").", email, senha) VALUES('".utf8_decode($_POST['nome'])."', '".$_POST['tipo']."', '".utf8_decode($_POST['cpfcnpj'])."', '".utf8_decode($_POST['email'])."', '".utf8_decode($_POST['senha'])."')")) {
-								echo "cadastrado";
-							}
-						} else {
-							echo "<div class='cell center mbottom20'><h1>Lançamentos</h1></div>";
-							if ($result = $conn->query("SELECT * FROM livro ORDER BY id_livro DESC LIMIT 6")) {
-								while ($row = $result->fetch_assoc()) {
-									echo "<div class='medium-6 large-4 cell center item'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
+						} else if (isset($_GET['livro'])) {
+							if ($result = $conn->query("SELECT * FROM livro WHERE id_livro = '".$_GET['livro']."'")) {
+								$row = $result->fetch_assoc();
+/*
+									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
 									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
 										$c = $result2->num_rows;
 										$i=1;
@@ -297,7 +293,66 @@
 											$i++;
 										}
 									}
-									echo "</h4><h5>R$ ".$row['valor']."</h5></div>";
+									echo "</h4><h5>R$ ".$row['valor']."</h5></a></div>";
+*/
+
+								echo "
+									<div class='cell center item'>
+										<div class='grid-x'>
+											<div class='small-12 medium-shrink psides30 cell'>
+												<img src='img/capa/".$row['isbn'].".jpg'>
+											</div>
+											<div class='small-12 medium-auto psides30 cell'>
+												<div class='grid-x left'>
+													<div class='cell'>
+														<h1 class='mbottom30'>".utf8_encode($row['titulo'])."</h1>
+								";
+								if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
+									$c = $result2->num_rows;
+									$i=1;
+									echo (($c > 1) ? "Autores: " : "Autor: ")."";
+									while ($row2 = $result2->fetch_assoc()) {
+										echo utf8_encode($row2['autor']).($c > $i ? " / " : "");
+										$i++;
+									}
+									echo "<br />";
+								}
+								if ($result2 = $conn->query("SELECT * FROM editora WHERE id_editora = '".$row['editora']."'")) {
+									$row2 = $result2->fetch_assoc();
+									echo "Editora: ".utf8_encode($row2['editora'])."<br /><br />";
+								}
+
+
+
+								echo "
+														".$row['edicao']."&ordf Edição<br />
+														Publicado em ".$row['ano_publicacao']."<br />
+														".$row['paginas']." páginas<br />
+														ISBN: ".$row['isbn']."<br /><br />
+														<h5>R$ ".$row['valor']."</h5>
+														<a href='#' class='button'>Adicionar ao carrinho</a>
+														<hr />
+														<h3>Descrição:</h3>".utf8_encode($row['descricao'])."
+												</div>
+											</div>
+										</div>
+									</div>
+								";
+							}
+						} else {
+							echo "<div class='cell center mbottom20'><h1>Lançamentos</h1></div>";
+							if ($result = $conn->query("SELECT * FROM livro ORDER BY id_livro DESC LIMIT 6")) {
+								while ($row = $result->fetch_assoc()) {
+									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
+									if ($result2 = $conn->query("SELECT a.autor FROM livro_autor la INNER JOIN autor a ON la.autor = a.id_autor WHERE livro = '".$row['id_livro']."'")) {
+										$c = $result2->num_rows;
+										$i=1;
+										while ($row2 = $result2->fetch_assoc()) {
+											echo utf8_encode($row2['autor']).($c > $i ? " / " : "");
+											$i++;
+										}
+									}
+									echo "</h4><h5>R$ ".$row['valor']."</h5></a></div>";
 								}
 							}
 						}
