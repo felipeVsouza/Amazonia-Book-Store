@@ -1,8 +1,9 @@
 <?php
 	session_start();
 	include_once("conn.php");
-	if (($result = $conn->query("SELECT * FROM cliente WHERE email = '".$_POST['email']."' AND senha = '".$_POST['senha']."'"))->num_rows >= 1) {
-		$row = $result->fetch_assoc();
+	$result = $conn->query("SELECT * FROM cliente WHERE email = '".$_POST['email']."' AND senha = '".$_POST['senha']."'");
+	$row = $result->fetch_assoc();
+	if ($result->num_rows >= 1) {
 		$_SESSION['id_cliente'] = $row['id_cliente'];
 		$_SESSION['cliente'] = $row['nome'];
 		$_SESSION['email'] = $_POST['email'];

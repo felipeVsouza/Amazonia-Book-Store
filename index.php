@@ -330,7 +330,7 @@
 								";
 							}
 						} else {
-							echo "<div class='cell center mbottom20'><h1>Lançamentos</h1></div>";
+							echo "<div class='cell center'><h1>Lançamentos</h1></div>";
 							if ($result = $conn->query("SELECT * FROM livro ORDER BY id_livro DESC LIMIT 6")) {
 								while ($row = $result->fetch_assoc()) {
 									echo "<div class='medium-6 large-4 cell center item'><a href='index.php?livro=".$row['id_livro']."'><img src='img/capa/".$row['isbn'].".jpg'><br /><h3>".utf8_encode($row['titulo'])."</h3><h4>";
