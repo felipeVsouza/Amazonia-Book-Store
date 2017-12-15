@@ -42,16 +42,16 @@
 			";
 		}
 		if (isset($_POST['cadastrar'])) {
-			$result = $conn->query("INSERT INTO cliente(usuario) VALUES('".$_POST['usuario']."')");
+			$result = $conn->query("INSERT INTO cliente(nome) VALUES('".$_POST['usuario']."')");
 
 		}
 		if (isset($_POST['atualizar'])) {
-			$conn->query("UPDATE cliente SET usuario = '".$_POST['usuario']."' WHERE id_cliente = '".$_POST['id_cliente']."'");
+			$conn->query("UPDATE cliente SET nome = '".$_POST['usuario']."' WHERE id_cliente = '".$_POST['id_cliente']."'");
 		}
 		if (isset($_POST['excluir'])) {
 			$conn->query("DELETE FROM cliente WHERE id_cliente = '".$_POST['id_cliente']."'");
 		}
-		$result = $conn->query("SELECT * FROM cliente ORDER BY usuario");
+		$result = $conn->query("SELECT * FROM cliente ORDER BY nome");
 		echo "<table><tr><th>ID</th><th>cliente</th><th colspan='2'>Ações</tr>";
 		while ($row = $result->fetch_assoc()) {
 			echo "<tr><td>".$row['id_cliente']."</td><td>".utf8_encode($row['usuario'])."</td><td><a href='usuario.php?editar=".$row['id_cliente']."'>Atualizar</a></td><td><a href='usuario.php?excluir=".$row['id_cliente']."'>Excluir</a></td></tr>";
