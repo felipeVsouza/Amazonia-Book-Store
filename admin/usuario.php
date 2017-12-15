@@ -37,13 +37,6 @@
 				<form method='POST' action='usuario.php'>
 					<label>cliente:</label>
 					<input type='text' name='usuario'>
-					<select name='autor'>";
-					$result = $conn->query("SELECT autor FROM autor");
-					while ($row = $result->fetch_assoc()) {
-						echo "<option value='".$row[0]."'>".$row[0]."</option>";
-					}
-					echo "
-					</select>
 					<input type='submit' name='cadastrar' value='Cadastrar'>
 				</form>
 			";
