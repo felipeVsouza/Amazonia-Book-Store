@@ -37,12 +37,20 @@
 				<form method='POST' action='livro.php'>
 					<label>Livro:</label>
 					<input type='text' name='titulo'>
+					<select name='autor'>";
+					$result = $conn->query("SELECT autor FROM autor");
+					while ($row = $result->fetch_assoc()) {
+						echo "<option value='".$row[0]."'>".$row[0]."</option>";
+					}
+					echo "
+					</select>
 					<input type='submit' name='cadastrar' value='Cadastrar'>
 				</form>
 			";
 		}
 		if (isset($_POST['cadastrar'])) {
 			$result = $conn->query("INSERT INTO livro(titulo) VALUES('".$_POST['titulo']."')");
+
 		}
 		if (isset($_POST['atualizar'])) {
 			$conn->query("UPDATE livro SET titulo = '".$_POST['titulo']."' WHERE id_livro = '".$_POST['id_livro']."'");
